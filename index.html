@@ -73,6 +73,10 @@
 				text-align: center;
 			}
 
+			#titleHalf {
+				margin-left: -10px;
+			}
+
 			#foodOptions {
 				background-color: #f0e6e6;
 				border-radius: 10px;
@@ -178,7 +182,7 @@
 			    outline: none;
 			}
 
-			#startButton {
+			#generatePollButton {
 				background-color: white;
 				color: #ff704d;
 				padding: 10px;
@@ -190,7 +194,7 @@
 				margin-top: 30px;
 			}
 
-			#startButton:hover {
+			#generatePollButton:hover {
 				cursor: pointer;
 			}
 
@@ -233,7 +237,17 @@
 				margin:0 auto 0 auto;
 			}
 
-			#generatedAccessCode {
+			#step3aContainer {
+				max-width:600px;
+				margin:0 auto 0 auto;
+			}
+
+			#step3bContainer {
+				max-width:600px;
+				margin:0 auto 0 auto;
+			}
+
+			.generatedAccessCode {
 				font-size: 50px;
 				background-color: white;
 				color: #ff704d;
@@ -306,9 +320,22 @@
 			table td.restaurantInfo p.restaurantAddressDistance {
 			}
 
+			.resVotes {
+				margin-top: 20px;
+				margin-left: auto;
+				margin-right: auto;
+				padding: 10px;
+				text-align: center;
+				background-color: white;
+				color: #ff704d;
+				border-radius: 20px;
+				width: 100px;
+				font-size: 20px;
+			}
+
 			@media screen and (max-width: 700px) {
 				body {
-					margin: 20px;
+					margin: 10px;
 				}
 
 				input[type=range]::-webkit-slider-thumb {
@@ -356,14 +383,14 @@
 					margin-top: 50px;
 				}
 			}
-
 		</style>
 	</head>
 	<body>
 		<div id="hero">
-			<a href="http://10.25.222.64:9432/yelpthing/">WeFood</a>
+			<a href="index.html">WeF<span id="titleHalf">ood</span></a>
 		</div>
 		<div id="mainContainer">
+			<!-- Step 1 Container -->
 			<div id="step1Container">
 				<div id="accessCodeContainer">
 					<p class="instructions">Enter your group code</p>
@@ -390,33 +417,35 @@
 						<div id="distanceContainer">
 							<p class="instructions">How far are you willing to go?</p>
 							<input id="distanceSlider" type="range" min="0" max="3">
-							<div id="distanceLabel"></div>
+							<div id="distanceLabel">Biking (2 miles)</div>
 						</div>
-						<div id="startButtonContainer">
-							<div id="startButton">Generate!</div>
+						<div id="generatePollButtonContainer">
+							<div id="generatePollButton">Generate!</div>
 						</div>
 					</div>
 				</div>
 			</div>
+			<!-- Step 2 Container -->
 			<div id="step2Container">
 				<div id="inviteCode">
 					<p class="instructions">Your group code</p>
-					<div id="accessCode"><span id="generatedAccessCode"></span></div>
+					<div id="accessCode"><span class="generatedAccessCode"></span></div>
 				</div>
 				<h1>Where should we go?</h1>
 				<div id="restaurantListContainer"></div>
 				<div id="surveySubmitButton">Submit</div>
 			</div>
+			<!-- Step 3a Container -->
 			<div id="step3aContainer">
 				<h1>Stand by for the results...</h1>
 				<div id="inviteCode">
 					<p class="instructions">Your group code</p>
-					<div id="accessCode"><span id="generatedAccessCode"></span></div>
+					<div id="accessCode"><span class="generatedAccessCode"></span></div>
 				</div>
 				<div id="voteResultsContainer">
-
 				</div>
 			</div>
+			<!-- Step 3b Container -->
 			<div id="step3bContainer">
 				<h1>Thanks for voting! Your group leader will soon have the results.</h1>
 			</div>
@@ -425,8 +454,13 @@
 			var accessCode = 0
 			var createdSurvey = false;
 
+			var latitude = 0;
+			var longitude = 0;
+
 			$(document).ready(function() {
-				// Initialize variables
+				setUserCoord() // Set latitude and longitude
+
+				// Initialize selectors
 				var step1Container = $('#step1Container')
 				var step2Container = $('#step2Container')
 				var step3aContainer = $('#step3aContainer')
@@ -444,17 +478,23 @@
 				step3aContainer.hide()
 				step3bContainer.hide()
 
-				// Step 1
+				// Form elements
+					// Food options
 				var foodOptions = $('#foodOptions')
-				var foodOptionsList = ['Boba', 'Italian', 'French', 'Korean', 'Chinese', 'Burgers',  'Pizza', 'Pasta', 'Salad',
-					'Fast Food', 'Desserts', 'Panda Express']
+				var foodOptionsList = ['Boba', 'Burgers', 'Chinese', 'Cuban', 'Desserts', 'Fast Food','French', 'Indian', 'Italian', 'Korean', 'Mexican', 'Panda Express', 'Pasta', 'Pizza', 'Ramen', 'Salad', 'Sushi']
+				// var foodOptionsList = ['Panda Express', 'Panda Express', 'Panda Express']
+					// Distance slider
 				var distanceSlider = $('#distanceSlider')
 				var distanceLabel = $('#distanceLabel')
 				var distancesList = ['4 Blocks', 'Walking (1 mile)', 'Biking (2 miles)', 'Driving (5 miles)']
 				var radiusList = [400, 1600, 3200, 8000]
-				var startButton = $('#startButton')
 
+					// Generate button
+				var generatePollButton = $('#generatePollButton')
+
+				// Draw food options
 				$.each(foodOptionsList, function(foodOptionsListIndex, foodOption) {
+					// Default first food option to selected
 					if(foodOptionsListIndex + 1 == foodOptionsList.length) {
 						foodOptions.append('<div class="foodOption foodOptionSelected">' + foodOption + '</div>')
 					} else {
@@ -462,23 +502,22 @@
 					}
 				});
 
+				// Bind onClick to .foodOption
 				$('.foodOption').on('click', function() {
 					$('.foodOptionSelected').removeClass('foodOptionSelected')
 					$(this).addClass('foodOptionSelected')
 				})
 
+				// Bind onClick to .pricePoint
 				$('.pricePoint').on('click', function() {
 					$('.pricePointSelected').removeClass('pricePointSelected')
 					$(this).addClass('pricePointSelected')
 				})
 
+				// Bind onChange / onInput to distanceSlider
 				distanceSlider.on('input change', function() {
 					distanceLabel.html(distancesList[$(this).val()]);
 				})
-				// Walking 1 mile
-				// Biking 2 mile
-				// Driving 5 miles
-				// 4 Blocks
 
 				// prints the table for people to choose from, for step 2
 				function kevinsFunction(response) {
@@ -487,43 +526,47 @@
 
 					generatedAccessCode.html(accessCode)
 
-					$.each(restaurants, function(restaurantIndex, restaurant) {
-						var restaurantName = restaurant.name;
-						var restaurantImage = restaurant.image_url;
-						var restaurantRating = restaurant.rating;
-						var restaurantAddress = restaurant.location.address1;
-						var restaurantDistance = restaurant.distance.toFixed(0);
+					if(restaurants.length == 0) {
+						restaurantListContainer.append('No restaurants were found.')
+					} else {
+						$.each(restaurants, function(restaurantIndex, restaurant) {
+							var restaurantName = restaurant.name;
+							var restaurantImage = restaurant.image_url;
+							var restaurantRating = restaurant.rating;
+							var restaurantAddress = restaurant.location.address1;
+							var restaurantDistance = restaurant.distance.toFixed(0);
 
-						var restaurantHTML = '<div class="restaurantContainer" data-resturantindex=' + restaurantIndex + '>'
-							restaurantHTML += '<table class="restaurantTable">'
-								restaurantHTML += '<tr id="index">'
-									restaurantHTML += '<td class="restaurantImage">'
-										restaurantHTML += '<img src="' + restaurantImage + '">'
-									restaurantHTML += '</td>'
-									restaurantHTML += '<td class="restaurantInfo">'
-										restaurantHTML += '<p class="restaurantName">' + restaurantName + '</p>'
-										restaurantHTML += '<p class="restaurantAddressDistance">' + restaurantAddress + " (" + (restaurantDistance*0.000621371).toFixed(2) + ' miles away)</p>'
-										restaurantHTML += '<p class="restaurantRating">Yelp Rating: '
-											for(var i = 0; i < parseInt(restaurantRating); i++) {
-												if(restaurantName == "Panda Express") {
-													restaurantHTML += "🐼";
-												} else {
-														restaurantHTML += "😋"
+							var restaurantHTML = '<div class="restaurantContainer" data-resturantindex=' + restaurantIndex + '>'
+								restaurantHTML += '<table class="restaurantTable">'
+									restaurantHTML += '<tr id="index">'
+										restaurantHTML += '<td class="restaurantImage">'
+											restaurantHTML += '<img src="' + restaurantImage + '">'
+										restaurantHTML += '</td>'
+										restaurantHTML += '<td class="restaurantInfo">'
+											restaurantHTML += '<p class="restaurantName">' + restaurantName + '</p>'
+											restaurantHTML += '<p class="restaurantAddressDistance">' + restaurantAddress + " (" + (restaurantDistance*0.000621371).toFixed(2) + ' miles away)</p>'
+											restaurantHTML += '<p class="restaurantRating">Yelp Rating: '
+												for(var i = 0; i < parseInt(restaurantRating); i++) {
+													if(restaurantName == "Panda Express") {
+														restaurantHTML += "🐼";
+													} else {
+															restaurantHTML += "😋"
+													}
 												}
-											}
-										restaurantHTML +='</p>'
-									restaurantHTML += '</td>'
-								restaurantHTML += '</tr>'
-							restaurantHTML += '</table>'
-						restaurantHTML += '</div>'
+											restaurantHTML +='</p>'
+										restaurantHTML += '</td>'
+									restaurantHTML += '</tr>'
+								restaurantHTML += '</table>'
+							restaurantHTML += '</div>'
 
-						restaurantListContainer.append(restaurantHTML)
-					});
+							restaurantListContainer.append(restaurantHTML)
+						});
 
-					$('.restaurantContainer').on('click', function() {
-						$('.restaurantContainerSelected').removeClass('restaurantContainerSelected')
-						$(this).addClass('restaurantContainerSelected')
-					})
+						$('.restaurantContainer').on('click', function() {
+							$('.restaurantContainerSelected').removeClass('restaurantContainerSelected')
+							$(this).addClass('restaurantContainerSelected')
+						})
+					}
 
 					step1Container.hide()
 					step2Container.show()
@@ -560,7 +603,7 @@
 														restaurantHTML += "😋"
 												}
 											}
-										restaurantHTML +='<p id="res_' + restaurantIndex + '"></p>'
+										restaurantHTML += '<p class="resVotes" id="res_' + restaurantIndex + '"></p>'
 										restaurantHTML +='</p>'
 									restaurantHTML += '</td>'
 								restaurantHTML += '</tr>'
@@ -593,7 +636,7 @@
 				}
 
 				// Clicking Start Survey Button
-				startButton.on('click', function() {
+				generatePollButton.on('click', function() {
 
 					// if (navigator.geolocation) {
 			    //     navigator.geolocation.getCurrentPosition(showPosition);
@@ -604,8 +647,6 @@
 					// Get values
 					var term = $('.foodOptionSelected').html()
 					var radius = radiusList[distanceSlider.val()] // in meters
-					var latitude = 34.019559
-					var longitude = -118.289529
 					var pricePoint = $('.pricePointSelected').data('pricepoint')
 
 					$.ajax({
@@ -652,9 +693,11 @@
 									accessCode: accessCode
 								}
 							}).done(function(response) {
+								console.log(response)
 								response = JSON.parse(response)
 								juliettesFunction(response);
 
+								cerinasFunction();
 								setInterval(function() {
 									cerinasFunction();
 								}, 3000);
@@ -668,6 +711,16 @@
 					})
 				});
 
+				function setUserCoord() {
+					// latitude = 34.019559;
+					// longitude = -118.289529;
+					latitude = 34.019559;
+					longitude = -118.289529;
+					// $.getJSON('http://api.wipmania.com/jsonp?callback=?', function (data) {
+					// 	latitude = data.latitude;
+					// 	longitude = data.longitude;
+					// });
+				}
 
 				joinButton.on('click', function() {
 					accessCode = joinAccessCode.val()
@@ -685,7 +738,7 @@
 				});
 
 				// Step 2
-				var generatedAccessCode = $('#generatedAccessCode');
+				var generatedAccessCode = $('.generatedAccessCode');
 				var restaurantListContainer = $('#restaurantListContainer')
 			})
 		</script>

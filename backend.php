@@ -6,6 +6,11 @@ $API_KEY = "knlsO9IAMiUn5tskPXoEv3xnuIW-sucG8c3cK5iqAd2VGC7I1LLqork8g_QoQduwnrQ5
 $API_HOST = "https://api.yelp.com";
 $SEARCH_PATH = "/v3/businesses/search";
 
+$database['serverAddress'] = "localhost";
+$database['username'] = "root";
+$database['password'] = "toor";
+$database['databaseName'] = "WeFood";
+
 function request($host, $path, $url_params = array()) {
     // Send Yelp API Call
     try {
@@ -71,7 +76,7 @@ if($action == 'search') {
 	$requestObj = json_decode($request);
 
 	// Open connection to DB
-	$mysqli = new mysqli('localhost', 'root', 'toor', 'WeFood');
+	$mysqli = new mysqli($database['serverAddress'], $database['username'], $database['password'], $database['databaseName']);
 	if($mysqli->connect_errno) {
 		printf("Connect failed: %s\n", $mysqli->connect_error);
 	}
@@ -110,7 +115,7 @@ if($action == 'search') {
 } else if($action == 'join') {
 	$joinAccessCode = $_POST['joinAccessCode'];
 
-	$mysqli = new mysqli('localhost', 'root', 'toor', 'WeFood');
+	$mysqli = new mysqli($database['serverAddress'], $database['username'], $database['password'], $database['databaseName']);
 	if($mysqli->connect_errno) {
 		printf("Connect failed: %s\n", $mysqli->connect_error);
 	}
@@ -133,7 +138,7 @@ if($action == 'search') {
 
 	$restaurantsVotes = [];
 
-	$mysqli = new mysqli('localhost', 'root', 'toor', 'WeFood');
+	$mysqli = new mysqli($database['serverAddress'], $database['username'], $database['password'], $database['databaseName']);
 	if($mysqli->connect_errno) {
 		printf("Connect failed: %s\n", $mysqli->connect_error);
 	}
@@ -163,7 +168,7 @@ if($action == 'search') {
 } else if($action == 'getResults') {
 	$accessCode = $_POST['accessCode'];
 
-	$mysqli = new mysqli('localhost', 'root', 'toor', 'WeFood');
+	$mysqli = new mysqli($database['serverAddress'], $database['username'], $database['password'], $database['databaseName']);
 	if($mysqli->connect_errno) {
 		printf("Connect failed: %s\n", $mysqli->connect_error);
 	}
