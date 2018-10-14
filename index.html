@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title>Home</title>
+		<link href="https://fonts.googleapis.com/css?family=Comfortaa|Josefin+Sans" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+		<style media="screen">
+			* {
+				margin:0;
+				padding:0;
+			}
+
+			h1 {
+				margin-bottom: 20px;
+				text-align: center;
+			}
+
+			body {
+				background-color: #ff704d;
+				font-family: 'Josefin Sans', sans-serif;
+				color: white;
+				margin-bottom: 90px;
+			}
+
+			a {
+				text-decoration: none;
+				color: white;
+			}
+
+			#mainContainer {
+				max-width: 800px;
+				margin: 0 auto 0 auto;
+			}
+
+			#accessCodeContainer {
+				width: 100%;
+				margin-left: auto;
+				margin-right: auto;
+				text-align: center;
+				padding-bottom: 15px;
+				margin-bottom: 30px;
+				border-bottom: white solid 1px;
+			}
+
+			#accessCodeContainer #joinAccessCode {
+				font-size:20pt;
+				text-align: center;
+				color: #ff704d;
+
+				-webkit-border-radius: 50px;
+				width: 200px;
+				border: none;
+				padding: 5px;
+			}
+
+			#accessCodeContainer #joinAccessCode:focus {
+				outline: none;
+			}
+
+			#createNewSurveyContainer {
+				text-align: center;
+			}
+
+			#hero {
+				margin-top: 70px;
+				margin-bottom: 40px;
+				font-size: 70px;
+				color: #f5fffc;
+				font-weight: bolder;
+				font-family: 'Comfortaa', cursive;
+				text-align: center;
+			}
+
+			#foodOptions {
+				background-color: #f0e6e6;
+				border-radius: 10px;
+				margin-bottom: 50px;
+			}
+
+			.foodOption {
+				color: #454343;
+				border-radius: 10px;
+				padding: 20px;
+			}
+
+			.foodOption:hover {
+				cursor: pointer;
+				background-color: #ffffff;
+				color: #ff704d;
+			}
+
+			.foodOptionSelected {
+				background-color: #ffffff;
+				color: #ff704d;
+			}
+
+			#pricePointGroups {
+				margin:0 auto 0 auto;
+				text-align: center;
+			}
+
+			#pricePointGroups input[type="button"].pricePoint {
+				border-style: solid;
+
+				-webkit-appearance: none;
+		    -moz-appearance: none;
+		    appearance: none;
+
+				padding: 10px;
+		    cursor: pointer; /* Pointer/hand icon */
+			}
+
+			#pricePointGroups:after {
+			    content: "";
+			    clear: both;
+			    display: table;
+			}
+
+			.pricePoint {
+				width: 50px;
+				margin: 10px;
+				border-radius: 10px;
+				background-color: #f0e6e6;
+			}
+
+			.pricePoint:hover {
+				cursor: pointer;
+				background-color: #ffffff;
+				color: #ff704d;
+			}
+
+			.pricePoint:focus {
+				outline: none;
+			}
+
+			.pricePointSelected {
+				outline: none;
+				background-color: #ffffff;
+				color:#ff704d;
+			}
+
+			.instructions {
+				margin: 10px;
+				text-align: center;
+				font-size: 20px;
+			}
+
+			#distanceLabel {
+				margin-top: 20px;
+			}
+
+			input[type=range]{
+			    -webkit-appearance: none;
+			}
+
+			input[type=range]::-webkit-slider-runnable-track {
+			    width: 600px;
+			    height: 7px;
+			    background: white;
+			    border: none;
+			    border-radius: 10px;
+			}
+
+			input[type=range]::-webkit-slider-thumb {
+			    -webkit-appearance: none;
+			    border: none;
+			    height: 16px;
+			    width: 16px;
+			    border-radius: 20px;
+			    background: #ff704d;
+					border: white solid 1px;
+			    margin-top: -4px;
+			}
+
+			input[type=range]:focus {
+			    outline: none;
+			}
+
+			#startButton {
+				background-color: white;
+				color: #ff704d;
+				padding: 10px;
+				border-radius: 30px;
+				width: 100px;
+				font-size: 20px;
+				margin-left: auto;
+				margin-right: auto;
+				margin-top: 30px;
+			}
+
+			#startButton:hover {
+				cursor: pointer;
+			}
+
+			#joinButton {
+				background-color: white;
+				color: #ff704d;
+				padding: 5px;
+				border-radius: 30px;
+				width: 100px;
+				font-size: 20px;
+				margin-left: auto;
+				margin-right: auto;
+				margin-top: 15px;
+			}
+
+			#joinButton:hover {
+				cursor: pointer;
+			}
+
+			#surveySubmitButton{
+				background-color: white;
+				color: #ff704d;
+				padding: 10px;
+				border-radius: 30px;
+				width: 100px;
+				text-align: center;
+				font-size: 20px;
+				margin-left: auto;
+				margin-right: auto;
+				margin-top: 30px;
+			}
+
+			#resturantListContainer {
+				background-color: white;
+				color: #ff704d;
+			}
+
+			#step2Container {
+				max-width:600px;
+				margin:0 auto 0 auto;
+			}
+
+			#generatedAccessCode {
+				font-size: 50px;
+				background-color: white;
+				color: #ff704d;
+				padding: 10px;
+				padding-bottom: 0px;
+				border-radius: 20px;
+				margin-left: auto;
+				margin-right: auto;
+				text-align: center;
+			}
+
+			#inviteCode {
+				margin: 20px;
+				padding-bottom: 30px;
+				border-bottom: solid white 1px;
+				text-align: center;
+			}
+
+			#accessCode {
+				margin-top: 20px;
+			}
+
+			.restaurantContainer {
+				margin-bottom:10px;
+				padding:2px;
+				border-radius: 20px;
+				background-color: #f0e6e6;
+				color: black;
+			}
+
+			.restaurantContainer:hover {
+				background-color: #ffffff;
+				color: #ff704d;
+				cursor: pointer;
+			}
+
+			.restaurantContainerSelected {
+				background-color: #ffffff;
+				color: #ff704d;
+			}
+
+			table.restaurantTable {
+				width: 100%;
+			}
+
+			table td.restaurantImage {
+				text-align: center;
+			}
+
+			table td.restaurantImage img {
+				width: 200px;
+				height: 150px;
+				overflow: hidden;
+				border-radius: 20px;
+			}
+
+			table td.restaurantInfo {
+				padding: 20px;
+				text-align: center;
+			}
+
+			table td.restaurantInfo p.restaurantName {
+				font-size: 40px;
+			}
+
+			table td.restaurantInfo p.restaurantRating {
+				font-size: 20px;
+			}
+
+			table td.restaurantInfo p.restaurantAddressDistance {
+			}
+
+			@media screen and (max-width: 700px) {
+				body {
+					margin: 20px;
+				}
+
+				input[type=range]::-webkit-slider-thumb {
+				    -webkit-appearance: none;
+				    border: none;
+				    height: 40px;
+				    width: 40px;
+				    border-radius: 20px;
+				    background: #ff704d;
+						border: white solid 1px;
+				    margin-top: -16px;
+				}
+
+				.restaurantContainer {
+					margin-bottom:10px;
+					padding:2px;
+					border-radius: 20px;
+					background-color: #f0e6e6;
+					color: black;
+				}
+				.restaurantContainerSelected {
+					background-color: #ffffff;
+					color: #ff704d;
+				}
+				table td.restaurantImage img {
+					width: 100px;
+					height: 80px;
+					overflow: hidden;
+					border-radius: 20px;
+				}
+				table td.restaurantInfo {
+					padding: 15px;
+				}
+
+				table td.restaurantInfo p.restaurantName {
+					font-size: 30px;
+				}
+
+				table td.restaurantInfo p.restaurantRating {
+					font-size: 15px;
+					padding-left: 25px;
+				}
+
+				#distanceLabel {
+					margin-top: 50px;
+				}
+			}
+
+		</style>
+	</head>
+	<body>
+		<div id="hero">
+			<a href="http://10.25.222.64:9432/yelpthing/">WeFood</a>
+		</div>
+		<div id="mainContainer">
+			<div id="step1Container">
+				<div id="accessCodeContainer">
+					<p class="instructions">Enter your group code</p>
+					<input id="joinAccessCode" type="text" size="4" maxlength="4">
+					<div id="joinButtonContainer">
+						<div id="joinButton">Join!</div>
+					</div>
+				</div>
+				<div id="createNewSurveyContainer">
+					<h1>Start Your Own Survey</h1>
+					<div id="surveyCreationContainer">
+						<p class="instructions">Select your cuisine</p>
+						<div id="foodOptions">
+						</div>
+						<div id="pricePoint">
+							<p class="instructions">Select your price point</p>
+							<div id="pricePointGroups">
+								<input type="button" class="pricePoint pricePointSelected" value="$" data-pricepoint="1">
+								<input type="button" class="pricePoint" value="$$" data-pricepoint="2">
+								<input type="button" class="pricePoint" value="$$$" data-pricepoint="3">
+								<input type="button" class="pricePoint" value="$$$$" data-pricepoint="4">
+							</div>
+						</div>
+						<div id="distanceContainer">
+							<p class="instructions">How far are you willing to go?</p>
+							<input id="distanceSlider" type="range" min="0" max="3">
+							<div id="distanceLabel"></div>
+						</div>
+						<div id="startButtonContainer">
+							<div id="startButton">Generate!</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="step2Container">
+				<div id="inviteCode">
+					<p class="instructions">Your group code</p>
+					<div id="accessCode"><span id="generatedAccessCode"></span></div>
+				</div>
+				<h1>Where should we go?</h1>
+				<div id="restaurantListContainer"></div>
+				<div id="surveySubmitButton">Submit</div>
+			</div>
+			<div id="step3aContainer">
+				<h1>Stand by for the results...</h1>
+				<div id="inviteCode">
+					<p class="instructions">Your group code</p>
+					<div id="accessCode"><span id="generatedAccessCode"></span></div>
+				</div>
+				<div id="voteResultsContainer">
+
+				</div>
+			</div>
+			<div id="step3bContainer">
+				<h1>Thanks for voting! Your group leader will soon have the results.</h1>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var accessCode = 0
+			var createdSurvey = false;
+
+			$(document).ready(function() {
+				// Initialize variables
+				var step1Container = $('#step1Container')
+				var step2Container = $('#step2Container')
+				var step3aContainer = $('#step3aContainer')
+				var step3bContainer = $('#step3bContainer')
+
+				var joinButton = $('#joinButton')
+				var joinAccessCode = $('#joinAccessCode')
+				var surveySubmitButton = $('#surveySubmitButton')
+
+				var createNewSurveyContainer = $('#createNewSurveyContainer');
+				var foodOptions = $('#foodOptions')
+
+				// Initialize containers
+				step2Container.hide()
+				step3aContainer.hide()
+				step3bContainer.hide()
+
+				// Step 1
+				var foodOptions = $('#foodOptions')
+				var foodOptionsList = ['Boba', 'Italian', 'French', 'Korean', 'Chinese', 'Burgers',  'Pizza', 'Pasta', 'Salad',
+					'Fast Food', 'Desserts', 'Panda Express']
+				var distanceSlider = $('#distanceSlider')
+				var distanceLabel = $('#distanceLabel')
+				var distancesList = ['4 Blocks', 'Walking (1 mile)', 'Biking (2 miles)', 'Driving (5 miles)']
+				var radiusList = [400, 1600, 3200, 8000]
+				var startButton = $('#startButton')
+
+				$.each(foodOptionsList, function(foodOptionsListIndex, foodOption) {
+					if(foodOptionsListIndex + 1 == foodOptionsList.length) {
+						foodOptions.append('<div class="foodOption foodOptionSelected">' + foodOption + '</div>')
+					} else {
+						foodOptions.append('<div class="foodOption">' + foodOption + '</div>')
+					}
+				});
+
+				$('.foodOption').on('click', function() {
+					$('.foodOptionSelected').removeClass('foodOptionSelected')
+					$(this).addClass('foodOptionSelected')
+				})
+
+				$('.pricePoint').on('click', function() {
+					$('.pricePointSelected').removeClass('pricePointSelected')
+					$(this).addClass('pricePointSelected')
+				})
+
+				distanceSlider.on('input change', function() {
+					distanceLabel.html(distancesList[$(this).val()]);
+				})
+				// Walking 1 mile
+				// Biking 2 mile
+				// Driving 5 miles
+				// 4 Blocks
+
+				// prints the table for people to choose from, for step 2
+				function kevinsFunction(response) {
+					accessCode = response.accessCode
+					var restaurants = response.businesses
+
+					generatedAccessCode.html(accessCode)
+
+					$.each(restaurants, function(restaurantIndex, restaurant) {
+						var restaurantName = restaurant.name;
+						var restaurantImage = restaurant.image_url;
+						var restaurantRating = restaurant.rating;
+						var restaurantAddress = restaurant.location.address1;
+						var restaurantDistance = restaurant.distance.toFixed(0);
+
+						var restaurantHTML = '<div class="restaurantContainer" data-resturantindex=' + restaurantIndex + '>'
+							restaurantHTML += '<table class="restaurantTable">'
+								restaurantHTML += '<tr id="index">'
+									restaurantHTML += '<td class="restaurantImage">'
+										restaurantHTML += '<img src="' + restaurantImage + '">'
+									restaurantHTML += '</td>'
+									restaurantHTML += '<td class="restaurantInfo">'
+										restaurantHTML += '<p class="restaurantName">' + restaurantName + '</p>'
+										restaurantHTML += '<p class="restaurantAddressDistance">' + restaurantAddress + " (" + (restaurantDistance*0.000621371).toFixed(2) + ' miles away)</p>'
+										restaurantHTML += '<p class="restaurantRating">Yelp Rating: '
+											for(var i = 0; i < parseInt(restaurantRating); i++) {
+												if(restaurantName == "Panda Express") {
+													restaurantHTML += "🐼";
+												} else {
+														restaurantHTML += "😋"
+												}
+											}
+										restaurantHTML +='</p>'
+									restaurantHTML += '</td>'
+								restaurantHTML += '</tr>'
+							restaurantHTML += '</table>'
+						restaurantHTML += '</div>'
+
+						restaurantListContainer.append(restaurantHTML)
+					});
+
+					$('.restaurantContainer').on('click', function() {
+						$('.restaurantContainerSelected').removeClass('restaurantContainerSelected')
+						$(this).addClass('restaurantContainerSelected')
+					})
+
+					step1Container.hide()
+					step2Container.show()
+				}
+
+				// generates step 3
+				// prints out the results with same table as Kevin's function along with results counts
+				function juliettesFunction(response) {
+					var restaurants = JSON.parse(response.businesses).businesses
+
+					var voteResultsContainer = $('#voteResultsContainer')
+
+					$.each(restaurants, function(restaurantIndex, restaurant) {
+						var restaurantName = restaurant.name;
+						var restaurantImage = restaurant.image_url;
+						var restaurantRating = restaurant.rating;
+						var restaurantAddress = restaurant.location.address1;
+						var restaurantDistance = restaurant.distance.toFixed(0);
+
+						var restaurantHTML = '<div class="restaurantContainer" data-resturantindex=' + restaurantIndex + '>'
+							restaurantHTML += '<table class="restaurantTable">'
+								restaurantHTML += '<tr id="index">'
+									restaurantHTML += '<td class="restaurantImage">'
+										restaurantHTML += '<img src="' + restaurantImage + '">'
+									restaurantHTML += '</td>'
+									restaurantHTML += '<td class="restaurantInfo">'
+										restaurantHTML += '<p class="restaurantName">' + restaurantName + '</p>'
+										restaurantHTML += '<p class="restaurantAddressDistance">' + restaurantAddress + ", " + (restaurantDistance*0.000621371).toFixed(2) + 'miles away</p>'
+										restaurantHTML += '<p class="restaurantRating">Yelp Rating: '
+											for(var i = 0; i < parseInt(restaurantRating); i++) {
+												if(restaurantName == "Panda Express") {
+													restaurantHTML += "🐼";
+												} else {
+														restaurantHTML += "😋"
+												}
+											}
+										restaurantHTML +='<p id="res_' + restaurantIndex + '"></p>'
+										restaurantHTML +='</p>'
+									restaurantHTML += '</td>'
+								restaurantHTML += '</tr>'
+							restaurantHTML += '</table>'
+						restaurantHTML += '</div>'
+
+						voteResultsContainer.append(restaurantHTML)
+					});
+				}
+
+				// updates votes for step 3
+				// looks at the votes, updates every 3 seconds to update vote counts (generated by Juliette's function)
+				function cerinasFunction() {
+					$.ajax({
+						method: "POST",
+						url: "backend.php",
+						data: {
+							action: "getResults",
+							accessCode: accessCode
+						}
+					}).done(function(response) {
+						response = JSON.parse(response)
+
+						var votes = response.choices.split('|');
+
+						$.each(votes, function(resId, resVote) {
+							$('#res_' + resId).html(resVote + " votes")
+						})
+					});
+				}
+
+				// Clicking Start Survey Button
+				startButton.on('click', function() {
+
+					// if (navigator.geolocation) {
+			    //     navigator.geolocation.getCurrentPosition(showPosition);
+			    // } else {
+			    //     console.log("Geolocation is not supported by this browser.")
+			    // }
+
+					// Get values
+					var term = $('.foodOptionSelected').html()
+					var radius = radiusList[distanceSlider.val()] // in meters
+					var latitude = 34.019559
+					var longitude = -118.289529
+					var pricePoint = $('.pricePointSelected').data('pricepoint')
+
+					$.ajax({
+						method: "POST",
+						url: "backend.php",
+						data: {
+							action: "search",
+							term: term,
+							radius: radius,
+							longitude: longitude,
+							latitude: latitude,
+							pricePoint: pricePoint
+						}
+					}).done(function(response) {
+						createdSurvey = true;
+						response = JSON.parse(response)
+						kevinsFunction(response)
+					});
+
+				});
+
+				surveySubmitButton.on('click', function() {
+					var resturantIndex = $('.restaurantContainerSelected').data('resturantindex')
+
+					$.ajax({
+						method: "POST",
+						url: "backend.php",
+						data: {
+							action: "vote",
+							accessCode: accessCode,
+							resturantIndex: resturantIndex
+						}
+					}).done(function(response) {
+						step2Container.hide();
+
+						if(createdSurvey == true) {
+							step3aContainer.show();
+
+							$.ajax({
+								method: "POST",
+								url: "backend.php",
+								data: {
+									action: "getResults",
+									accessCode: accessCode
+								}
+							}).done(function(response) {
+								response = JSON.parse(response)
+								juliettesFunction(response);
+
+								setInterval(function() {
+									cerinasFunction();
+								}, 3000);
+
+							});
+
+						} else {
+							console.log("ASDS2")
+							step3bContainer.show();
+						}
+					})
+				});
+
+
+				joinButton.on('click', function() {
+					accessCode = joinAccessCode.val()
+					$.ajax({
+						method: "POST",
+						url: "backend.php",
+						data: {
+							action: "join",
+							joinAccessCode: accessCode
+						}
+					}).done(function(response) {
+						response = JSON.parse(response)
+						kevinsFunction(response)
+					});
+				});
+
+				// Step 2
+				var generatedAccessCode = $('#generatedAccessCode');
+				var restaurantListContainer = $('#restaurantListContainer')
+			})
+		</script>
+	</body>
+</html>
