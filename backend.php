@@ -47,7 +47,7 @@ function request($host, $path, $url_params = array()) {
     return $response;
 }
 
-// Actual shit
+// grabbing the data from AJAX response object
 
 $action = $_POST['action'];
 // $action = "search";
